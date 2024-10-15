@@ -7,6 +7,8 @@ interface Customer {
   id: number;
   name: string;
   email: string;
+  phone: string; // Agregar el campo 'phone'
+  document_number: string; // Agregar el campo 'document_number'
 }
 
 const Customers: React.FC = () => {
@@ -14,6 +16,8 @@ const Customers: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState(''); // Estado para el teléfono
+  const [documentNumber, setDocumentNumber] = useState(''); // Estado para el número de documento
 
   const fetchCustomers = async () => {
     const token = localStorage.getItem('token');
@@ -30,7 +34,7 @@ const Customers: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const customerData = { name, email };
+    const customerData = { name, email, phone, document_number: documentNumber }; // Incluir los campos
 
     if (selectedCustomer) {
       // Update existing customer
@@ -46,6 +50,8 @@ const Customers: React.FC = () => {
 
     setName('');
     setEmail('');
+    setPhone(''); // Limpiar el teléfono
+    setDocumentNumber(''); // Limpiar el número de documento
     setSelectedCustomer(null);
     fetchCustomers(); // Call the fetch function to refresh the list
   };
@@ -54,6 +60,8 @@ const Customers: React.FC = () => {
     setSelectedCustomer(customer);
     setName(customer.name);
     setEmail(customer.email);
+    setPhone(customer.phone); // Cargar el número de teléfono
+    setDocumentNumber(customer.document_number); // Cargar el número de documento
   };
 
   const handleDelete = async (id: number) => {
@@ -82,12 +90,26 @@ const Customers: React.FC = () => {
           placeholder="Email"
           required
         />
+        <input
+          type="text"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Phone"
+          required
+        />
+        <input
+          type="text"
+          value={documentNumber}
+          onChange={(e) => setDocumentNumber(e.target.value)}
+          placeholder="Document Number"
+          required
+        />
         <button type="submit">{selectedCustomer ? 'Update' : 'Create'} Customer</button>
       </form>
       <ul>
         {customers.map((customer) => (
           <li key={customer.id}>
-            {customer.name} - {customer.email}
+            {customer.name} - {customer.email} - {customer.phone} - {customer.document_number}
             <button onClick={() => handleEdit(customer)}>Edit</button>
             <button onClick={() => handleDelete(customer.id)}>Delete</button>
           </li>

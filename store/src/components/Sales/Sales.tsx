@@ -106,7 +106,6 @@ const Sales: React.FC = () => {
       setCustomer(null); // Reset customer selection
     } catch (error) {
       console.error('Error registering sale:', error);
-      alert('Failed to register sale.');
     }
   };
 
